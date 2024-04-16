@@ -1,39 +1,41 @@
 package com.example.register_app.data_handling.data_sources;
 
+import android.util.Log
+
 class StorageDataSource : DataSource {
     var exampleData: String = """
 {
     "title":"MainTitle",
-    "elementLines":
+    "itemLines":
     [
         {
-        "title":"ElementLineTitle0",
-        "elements":
+        "title":"ItemLineTitle0",
+        "items":
             [
                 {
-                "name":"ElementName00",
-                "price":0.00,
+                "name":"ItemName00",
+                "price":"0.00",
                 "deposit":true
                 },
                 {
-                "name":"ElementName01",
-                "price":0.1,
+                "name":"ItemName01",
+                "price":"0.10",
                 "deposit":false
                 }
             ]
         },
         {
-        "title":"ElementLineTitle1",
-        "elements":
+        "title":"ItemLineTitle1",
+        "items":
             [
                 {
-                "name":"ElementName10",
-                "price":1.00,
+                "name":"ItemName10",
+                "price":"1.00",
                 "deposit":false
                 },
                 {
-                "name":"ElementName11",
-                "price":1.10,
+                "name":"ItemName11",
+                "price":"1.10",
                 "deposit":true
                 }
             ]

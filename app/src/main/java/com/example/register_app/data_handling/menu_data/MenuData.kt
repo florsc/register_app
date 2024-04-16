@@ -1,30 +1,30 @@
 package com.example.register_app.data_handling.menu_data
 
+import com.example.register_app.util.Money
 import org.json.JSONArray
 import org.json.JSONObject
-import java.math.BigDecimal
 
 class MenuData(jsonMenu: JSONObject) {
     private var title: String
-    private var elementLines: List<ElementLine>
+    private var itemLines: List<ItemLine>
 
     init {
         title = jsonMenu["title"] as String
-        val jsonElementLines = jsonMenu.getJSONArray("elementLines")
-        val elementLinesList : ArrayList<ElementLine> = arrayListOf()
-        for (i in 0 until jsonElementLines.length()) {
-            elementLinesList.add(ElementLine(jsonElementLines.getJSONObject(i)))
+        val jsonItemLines = jsonMenu.getJSONArray("itemLines")
+        val itemLinesList : ArrayList<ItemLine> = arrayListOf()
+        for (i in 0 until jsonItemLines.length()) {
+            itemLinesList.add(ItemLine(jsonItemLines.getJSONObject(i)))
         }
-        this.elementLines = elementLinesList.toList()
+        this.itemLines = itemLinesList.toList()
     }
     fun serialize() : JSONObject {
         val jsonMenu = JSONObject()
         jsonMenu.put("title", title)
-        val jsonElementLines = JSONArray()
-        for(element in elementLines) {
-            jsonElementLines.put(element.serialize())
+        val jsonItemLines = JSONArray()
+        for(item in itemLines) {
+            jsonItemLines.put(item.serialize())
         }
-        jsonMenu.put("elementLines", jsonElementLines)
+        jsonMenu.put("itemLines", jsonItemLines)
         return jsonMenu
     }
 
@@ -33,61 +33,61 @@ class MenuData(jsonMenu: JSONObject) {
     }
 
     private fun checkIndex(i: Int){
-        assert(i>0 || i<elementLines.size)
+        assert(i>0 || i<itemLines.size)
     }
     fun getLineTitle(i: Int) : String{
         checkIndex(i)
-        return elementLines[i].getTitle()
+        return itemLines[i].getTitle()
     }
 
-    fun getElementName(i: Int, j: Int) : String{
+    fun getItemName(i: Int, j: Int) : String{
         checkIndex(i)
-        return elementLines[i].getName(j)
+        return itemLines[i].getName(j)
     }
 
-    fun getElementPrice(i: Int, j: Int) : BigDecimal{
+    fun getItemPrice(i: Int, j: Int) : Money{
         checkIndex(i)
-        return elementLines[i].getPrice(j)
+        return itemLines[i].getPrice(j)
     }
 
-    fun getElementDeposit(i: Int, j: Int) : Boolean{
+    fun getItemDeposit(i: Int, j: Int) : Boolean{
         checkIndex(i)
-        return elementLines[i].getDeposit(j)
+        return itemLines[i].getDeposit(j)
     }
 
-    fun getNumberOfElementLines(): Int {
-        return elementLines.size
+    fun getNumberOfItemLines(): Int {
+        return itemLines.size
     }
 
-    fun getNumberOfElements(i: Int): Int {
+    fun getNumberOfItems(i: Int): Int {
         checkIndex(i)
-        return elementLines[i].getNumberOfElements()
+        return itemLines[i].getNumberOfItems()
     }
 }
 
-internal class ElementLine(jsonElementLine: JSONObject) {
+internal class ItemLine(jsonItemLine: JSONObject) {
     private var title: String
-    private var elements: List<Element>
+    private var items: List<Item>
 
     init {
-        title = jsonElementLine["title"] as String
-        val jsonElements = jsonElementLine.getJSONArray("elements")
-        val elementsList : ArrayList<Element> = arrayListOf()
-        for (i in 0 until jsonElements.length())
-            elementsList.add(Element(jsonElements.getJSONObject(i)))
+        title = jsonItemLine["title"] as String
+        val jsonItems = jsonItemLine.getJSONArray("items")
+        val itemsList : ArrayList<Item> = arrayListOf()
+        for (i in 0 until jsonItems.length())
+            itemsList.add(Item(jsonItems.getJSONObject(i)))
 
-        elements = elementsList.toList()
+        items = itemsList.toList()
     }
 
     fun serialize() : JSONObject {
-        val jsonElementLine = JSONObject()
-        jsonElementLine.put("title", title)
-        val jsonElements = JSONArray()
-        for(element in elements)
-            jsonElements.put(element.serialize())
+        val jsonItemLine = JSONObject()
+        jsonItemLine.put("title", title)
+        val jsonItems = JSONArray()
+        for(item in items)
+            jsonItems.put(item.serialize())
 
-        jsonElementLine.put("elements", jsonElements)
-        return jsonElementLine
+        jsonItemLine.put("items", jsonItems)
+        return jsonItemLine
     }
 
     fun getTitle(): String{
@@ -95,53 +95,53 @@ internal class ElementLine(jsonElementLine: JSONObject) {
     }
 
     private fun checkIndex(i: Int){
-        assert(i>0 || i<=elements.size)
+        assert(i>0 || i<=items.size)
     }
 
     fun getName(i: Int): String{
         checkIndex(i)
-        return elements[i].getName()
+        return items[i].getName()
     }
 
-    fun getPrice(i: Int): BigDecimal{
+    fun getPrice(i: Int): Money{
         checkIndex(i)
-        return elements[i].getPrice()
+        return items[i].getPrice()
     }
 
     fun getDeposit(i: Int): Boolean{
         checkIndex(i)
-        return elements[i].getDeposit()
+        return items[i].getDeposit()
     }
 
-    fun getNumberOfElements(): Int {
-        return elements.size
+    fun getNumberOfItems(): Int {
+        return items.size
     }
 }
 
-internal class Element(jsonElement: JSONObject) {
+internal class Item(jsonItem: JSONObject) {
     private var name: String
-    private var price: BigDecimal
+    private var price: Money
     private var deposit: Boolean
 
     init {
-        name = jsonElement["name"] as String
-        price = jsonElement["price"] as BigDecimal
-        deposit = jsonElement["deposit"] as Boolean
+        name = jsonItem["name"] as String
+        price = Money(jsonItem["price"] as String)
+        deposit = jsonItem["deposit"] as Boolean
     }
 
     fun serialize() : JSONObject {
-        val jsonElement = JSONObject()
-        jsonElement.put("name", name)
-        jsonElement.put("price", price)
-        jsonElement.put("deposit", deposit)
-        return jsonElement
+        val jsonItem = JSONObject()
+        jsonItem.put("name", name)
+        jsonItem.put("price", price)
+        jsonItem.put("deposit", deposit)
+        return jsonItem
     }
 
     fun getName(): String{
         return name
     }
 
-    fun getPrice(): BigDecimal{
+    fun getPrice(): Money {
         return price
     }
 
