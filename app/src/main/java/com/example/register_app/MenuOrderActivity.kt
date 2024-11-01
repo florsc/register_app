@@ -20,7 +20,7 @@ class MenuOrderActivity : AppCompatActivity() {
         name.text = menuData.getItemName(lineIndex, itemIndex)
 
         val price = item.findViewById<TextView>(R.id.price)
-        price.text = menuData.getItemPrice(lineIndex, itemIndex).toString()
+        price.text = menuData.getItemPrice(lineIndex, itemIndex).toMoneyString()
 
         val count = item.findViewById<TextView>(R.id.count)
         count.text = 0.toString()
